@@ -1,12 +1,18 @@
+import useHook from "@/hooks/useHook";
+import { error, success } from "@/utils/alerts";
 import React from "react";
 import Detail from "../shared/Detail";
+import { BigNumber } from "ethers";
 
 const CreateCompaignIndex: React.FC = () => {
+  const { contract, signer } = useHook();
   const [compaign, setCompaign] = React.useState<COMPAIGN.NewCompaign>({
     goal: 0,
     title: "",
     story: "",
+    tokenValue: 0,
     maxReachTime: new Date(),
+    icoToken: "",
   });
 
   const onChange = <T extends keyof COMPAIGN.NewCompaign>(
@@ -16,9 +22,29 @@ const CreateCompaignIndex: React.FC = () => {
     setCompaign({ ...compaign, [name]: value });
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(compaign);
+    const data = {
+      ...compaign,
+      maxReachTime: Math.round(compaign.maxReachTime.getTime() / 1000),
+    };
+    try {
+      const tx = await contract
+        .connect(signer)
+        .createProject(
+          data.title,
+          BigNumber.from(data.goal),
+          data.story,
+          data.maxReachTime,
+          data.tokenValue,
+          data.icoToken
+        );
+      await tx.wait();
+      success("Campaign successfully created!");
+    } catch (err) {
+      console.log(err.message);
+      error(err.message);
+    }
   };
 
   return (
@@ -49,14 +75,36 @@ const CreateCompaignIndex: React.FC = () => {
             }
           />
           <Detail
-            label="Goal"
+            label="Goal(in wei)"
             value={
               <input
                 className="input rounded-sm ring-2 ring-gray-500"
-                placeholder="Goal"
                 type={"number"}
                 value={compaign.goal}
                 onChange={(e) => onChange("goal", e.target.valueAsNumber)}
+              />
+            }
+          />
+          <Detail
+            label="ICO Token"
+            value={
+              <input
+                className="input rounded-sm ring-2 ring-gray-500"
+                placeholder="ICO Token Address"
+                value={compaign.icoToken}
+                onChange={(e) => onChange("icoToken", e.target.value)}
+              />
+            }
+          />
+          <Detail
+            label="Token value (in wei)"
+            value={
+              <input
+                className="input rounded-sm ring-2 ring-gray-500"
+                placeholder="Token value"
+                type={"number"}
+                value={compaign.tokenValue}
+                onChange={(e) => onChange("tokenValue", e.target.valueAsNumber)}
               />
             }
           />

@@ -8,9 +8,12 @@ declare module COMPAIGN {
     numOfContributers: number;
     contributors?: COMMUN.Adress[];
     launchDay: Date;
+    tokenValue?: number;
     maxReachTime: Date;
     contributed?: boolean;
     requests?: Request[];
+    funds?: number;
+    icoToken?: string
   };
 
   type NewCompaign = Omit<

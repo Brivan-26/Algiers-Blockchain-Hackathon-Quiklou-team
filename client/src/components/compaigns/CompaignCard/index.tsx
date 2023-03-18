@@ -13,12 +13,14 @@ const CompaignCard: React.FC<Props> = ({
   maxReachTime,
   numOfContributers,
   owner,
+  tokenValue,
   story,
   title,
   contributed,
   onClick,
   onContribute,
 }) => {
+  console.log(launchDay, title);
   /* -------------------------------------------------------------------------- */
   /*                                 RENDER JSX                                 */
   /* -------------------------------------------------------------------------- */
@@ -33,7 +35,7 @@ const CompaignCard: React.FC<Props> = ({
           <p className="font-medium text-white line-clamp-2">{title}</p>
           <p className="text-xs text-gray-500 line-clamp-1">{story}</p>
         </div>
-        <div className="flex flex-col divide-gray-500">
+        <div className="flex flex-col gap-2 divide-gray-500">
           <div className="flex flex-col">
             <p className="text-xs text-gray-500">Created At</p>
             <p className="text-xs font-semibold text-white">
@@ -77,7 +79,7 @@ const CompaignCard: React.FC<Props> = ({
           />
           <p className="text-xs text-gray-400">
             <span className="text-gray-500">by</span>{" "}
-            <span className="hover:underline">{owner}</span>
+            <span className="hover:underline">{owner.slice(0, 25)}...</span>
           </p>
         </div>
       </div>

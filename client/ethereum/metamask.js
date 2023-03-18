@@ -1,22 +1,19 @@
 import { ethers } from "ethers";
-import { toast } from "react-toastify";
-import faucetContract from "./campaign";
+import campaignContract from "./campaign";
 import { success, warn, error } from "@/utils/alerts";
 export const connectWallet = async (
   setWalletAddress,
   setSigner,
   setContract
 ) => {
-  if (
-    typeof window != "undefined" &&
-    typeof WindowGlobal.ethereum != "undefined"
-  ) {
+  if (typeof window != "undefined") {
     try {
-      const provider = new ethers.providers.Web3Provider(WindowGlobal.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const accounts = await provider.send("eth_requestAccounts", []);
       setSigner(provider.getSigner());
-      setContract(faucetContract(provider));
+      setContract(campaignContract(provider));
       setWalletAddress(accounts[0]);
+      success("Successfully logged with your metamask!");
     } catch (err) {
       console.log(err.message);
       warn(err.message);
@@ -37,7 +34,7 @@ export const getCurrentWalletConnected = async (
       const accounts = await provider.send("eth_accounts", []);
       if (accounts.length > 0) {
         setSigner(provider.getSigner());
-        setContract(faucetContract(provider));
+        setContract(campaignContract(provider));
         setWalletAddress(accounts[0]);
       } else {
         warn("Connect to metamask using the connect button");

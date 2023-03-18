@@ -1,11 +1,14 @@
 import { IMAGES } from "@/constants/images";
+import useHook from "@/hooks/useHook";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-
+import { connectWallet } from "../../../../ethereum/metamask";
 const Header: React.FC = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
+  const { walletAddress, setWalletAddress, contract, setSigner, setContract } =
+    useHook();
 
+  const [searchValue, setSearchValue] = useState<string>("");
   return (
     <div className="flex w-full justify-center">
       <div className="container flex items-center justify-between p-4">
@@ -28,10 +31,28 @@ const Header: React.FC = () => {
           />
         </div>
         <div></div>
-        <div>
-          <Link href={"/compaigns/create"} className="btn">
-            Create a Compaign
-          </Link>
+        <div className="flex gap-4">
+          {walletAddress.length > 0 ? (
+            <>
+              <p className="text-white">
+                Welcome <b>{walletAddress.slice(0, 12)}...</b>
+              </p>
+              <div>
+                <Link href={"/compaigns/create"} className="btn">
+                  Create a Compaign
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div
+              className="btn cursor-pointer"
+              onClick={() =>
+                connectWallet(setWalletAddress, setSigner, setContract)
+              }
+            >
+              Login using Metamask
+            </div>
+          )}
         </div>
       </div>
     </div>

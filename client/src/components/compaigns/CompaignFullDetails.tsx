@@ -1,4 +1,5 @@
 import { INFO } from "@/constants/info";
+import useHook from "@/hooks/useHook";
 import { getProfileImageSrc } from "@/utils/lib";
 import React from "react";
 import Detail from "../shared/Detail";
@@ -17,6 +18,7 @@ const CompaignFullDetails: React.FC<Props> = ({
     numOfContributers,
     owner,
     story,
+    tokenValue,
     title,
     contributed,
     requests,
@@ -41,7 +43,7 @@ const CompaignFullDetails: React.FC<Props> = ({
               />
               <p className="text-xs text-gray-400">
                 <span className="text-gray-300">by</span>{" "}
-                <span className="cursor-pointer hover:underline">{owner}</span>
+                <span className="cursor-pointer text-white font-semibold hover:underline">{owner}</span>
               </p>
             </div>
           }
@@ -49,6 +51,7 @@ const CompaignFullDetails: React.FC<Props> = ({
         <Detail label="Story: " value={story} />
         <Detail label="Created At:" value={launchDay.toUTCString()} />
         <Detail label="Goal: " value={`${goal} ${INFO.CURRENCY}`} />
+        <Detail label="Token value(per wei):" value={tokenValue} />
         <Detail label="Max Reach Time:" value={maxReachTime.toUTCString()} />
         {!contributed && (
           <Detail

@@ -4,8 +4,10 @@ import Modal from "../shared/Modal";
 import CompaignCard from "./CompaignCard";
 import CompaignFullDetails from "./CompaignFullDetails";
 import CompaignLoadingCard from "./CompaignCard/CompaignLoadingCard";
+import useHook from "@/hooks/useHook";
 
 const AllCompaignsIndex = () => {
+  const { contract, signer } = useHook();
   /* -------------------------------------------------------------------------- */
   /*                                   STATES                                   */
   /* -------------------------------------------------------------------------- */
@@ -34,19 +36,55 @@ const AllCompaignsIndex = () => {
   const contributeHandler = (id: number) => {
     // TODO: implement contribute handler
     console.log("contributeHandler");
-    console.log(`You clicked ${id}`);
+    console.log(`You   ${id}`);
   };
 
+  const fetchCampagins = async () => {
+    if (contract) {
+      try {
+        let projects = await contract.getProjects();
+        let campaigns: COMPAIGN.Compaign[] = [];
+        for (let i = 0; i < projects.length; i++) {
+          console.log(projects[i]);
+          const {
+            goal,
+            title,
+            story,
+            requests,
+            owner,
+            numOfContributers,
+            maxReachTime,
+            launchDay,
+            tokenValue,
+            id,
+            icoToken,
+          } = projects[i];
+          campaigns.push({
+            goal: goal.toNumber(),
+            id: id.toNumber(),
+            launchDay: new Date(launchDay.toNumber() as number),
+            maxReachTime: new Date(maxReachTime.toNumber() as number),
+            numOfContributers: numOfContributers.toNumber(),
+            owner,
+            story,
+            title,
+            tokenValue: tokenValue.toNumber(),
+          });
+        }
+        setCompaigns(campaigns);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+
+    setLoading(false);
+  };
   /* -------------------------------------------------------------------------- */
   /*                                 USE EFFECT                                 */
   /* -------------------------------------------------------------------------- */
   React.useEffect(() => {
-    // TODO: fetch compaigns from server
-    setTimeout(() => {
-      setCompaigns(DUMMY_COMPAIGNS);
-      setLoading(false);
-    }, 1000);
-  }, []);
+    fetchCampagins();
+  }, [contract]);
 
   /* -------------------------------------------------------------------------- */
   /*                                 RENDER JSX                                 */

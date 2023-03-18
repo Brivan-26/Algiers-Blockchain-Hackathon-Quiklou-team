@@ -4,14 +4,16 @@ pragma solidity ^0.8.17;
 import "./ICOToken.sol";
 
 contract Campaign {
-    address owner;
+    address public owner;
     struct Project {
+        uint id;
         address owner;
+        string title;
         uint goal;
         uint launchDay;
         string story;
         uint maxReachTime;
-        uint numOfContributors;
+        uint numOfContributers;
         uint tokenValue;
         Request[] requests;
         ICOToken icoToken;
@@ -22,6 +24,7 @@ contract Campaign {
     mapping(uint => mapping(address => uint)) contributors; // project ID => account address => amount of contribution
     mapping(uint => uint) funds; // project ID => balance
     struct Request {
+        uint id;
         string description;
         uint amount;
         address payable recipient;
@@ -35,9 +38,12 @@ contract Campaign {
         owner = msg.sender;
     }
 
-    function createProject(uint _goal, string memory _story, uint _maxReachTime, uint _tokenValue, ICOToken _address) external {
+    function createProject(string memory _title, uint _goal, string memory _story, uint _maxReachTime, uint _tokenValue, address _address) external {
+        uint newID = projects.length;
         Project storage project = projects.push();
+        project.id = newID;
         project.owner = msg.sender;
+        project.title = _title;
         project.goal = _goal;
         project.story = _story;
         project.maxReachTime = _maxReachTime;
@@ -45,6 +51,10 @@ contract Campaign {
         project.launchDay = block.timestamp;
         project.icoToken = ICOToken(_address);
         project.funds = 0;
+    }
+
+    function getProjects() external view returns(Project[] memory){
+        return projects;
     }
 
     function contribute(uint _id) external projectExists(_id) payable {
@@ -64,7 +74,7 @@ contract Campaign {
         }
         contributors[_id][msg.sender] = msg.value;
         project.contributors.push(msg.sender);
-        project.numOfContributors++;
+        project.numOfContributers++;
         project.funds += msg.value;
     } 
 
@@ -74,7 +84,9 @@ contract Campaign {
         require(_recipient != address(0), "Invalid Recipient address");
         require(_amount <= project.funds, "No sufficiant balance");
 
+        uint newID = project.requests.length;
         Request storage request = project.requests.push();
+        request.id = newID;
         request.description = _description;
         request.amount = _amount;
         request.recipient = payable(_recipient);
