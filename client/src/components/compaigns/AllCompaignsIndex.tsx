@@ -6,9 +6,11 @@ import CompaignFullDetails from "./CompaignFullDetails";
 import CompaignLoadingCard from "./CompaignCard/CompaignLoadingCard";
 import useHook from "@/hooks/useHook";
 import Detail from "../shared/Detail";
+import { error, success } from "@/utils/alerts";
+import { ethers } from "ethers";
 
 const AllCompaignsIndex = () => {
-  const { contract, signer } = useHook();
+  const { walletAddress, contract, signer } = useHook();
   /* -------------------------------------------------------------------------- */
   /*                                   STATES                                   */
   /* -------------------------------------------------------------------------- */
@@ -37,11 +39,21 @@ const AllCompaignsIndex = () => {
     setSelectedCompaign(compaign);
   };
 
-  const contributeHandler = () => {
+  const contributeHandler = async () => {
     if (selectedCompaignToContribute) {
       const id = selectedCompaignToContribute.id;
       const amount = selectedCompaignToContribute.amount;
-      // TODO: implement contribute handler
+      try {
+        console.log(amount, `${amount}`);
+        const tx = await contract.connect(signer).contribute(id, {
+          value: ethers.utils.parseUnits(`${amount}`, "wei"),
+        });
+        await tx.wait();
+        success("You are a contributor of this project now!");
+      } catch (err) {
+        console.log(err.message);
+        error(err.message);
+      }
     }
   };
 
@@ -56,14 +68,15 @@ const AllCompaignsIndex = () => {
         let projects = await contract.getProjects();
         let campaigns: COMPAIGN.Compaign[] = [];
         for (let i = 0; i < projects.length; i++) {
-          console.log(projects[i]);
           const {
             goal,
             title,
             story,
             requests,
+            funds,
             owner,
             numOfContributers,
+            contributors,
             maxReachTime,
             launchDay,
             tokenValue,
@@ -79,9 +92,17 @@ const AllCompaignsIndex = () => {
             owner,
             story,
             title,
+            funds,
+            contributors,
             tokenValue: tokenValue.toNumber(),
+            contributed: Boolean(
+              contributors.find(
+                (item: string) => item.toLowerCase() === walletAddress
+              ) || owner.toLowerCase() === walletAddress
+            ),
           });
         }
+        console.log(campaigns);
         setCompaigns(campaigns);
       } catch (err) {
         console.log(err.message);
@@ -137,6 +158,7 @@ const AllCompaignsIndex = () => {
                             <input
                               className="input rounded-sm ring-2 ring-primary"
                               placeholder="Amount ETH"
+                              type="number"
                               onChange={(e) =>
                                 setSelectedCompaignToContribute((prev) => ({
                                   ...prev,
@@ -145,7 +167,8 @@ const AllCompaignsIndex = () => {
                               }
                             />
                             <p className="text-xs text-gray-300">
-                              Each ammount of bla bla ETH
+                              {selectedCompaignToContribute.tokenValue} Wei
+                              worths 1 token
                             </p>
                             <button
                               className="btn w-fit"
