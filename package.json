@@ -21,6 +21,10 @@
     "typechain": "^8.1.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "next-seo": "^5.15.0"
+=======
+    "@openzeppelin/contracts": "^4.8.2"
+>>>>>>> d6da84f6b80d026c7e1fd8972ab725011700d5d0
   }
 }
