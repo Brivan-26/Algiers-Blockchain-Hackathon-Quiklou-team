@@ -1,5 +1,6 @@
 import { INFO } from "@/constants/info";
 import { getProfileImageSrc } from "@/utils/lib";
+import { ethers } from "ethers";
 import React from "react";
 
 type Props = COMPAIGN.Compaign & {

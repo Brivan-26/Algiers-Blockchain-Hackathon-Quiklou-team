@@ -31,6 +31,7 @@ contract Campaign {
         string status;
         bool completed;
         uint approvalsNum;
+        address[] voters;
     }
     mapping(uint => mapping(uint => mapping(address => bool))) requestApprovals; // project ID => request ID => account => bool
 
@@ -67,9 +68,9 @@ contract Campaign {
         require(msg.value >= project.tokenValue, "Your current contribution doesn't even worth 1 token");
         require(project.funds < project.goal, "Goal reached");
         uint tokens = msg.value / project.tokenValue;
-        require(project.icoToken.allowance(project.owner, address(this)) >= tokens, "No sufficiant tokens left");
+        require(project.icoToken.balanceOf(address(this)) >= tokens, "No sufficiant tokens left");
 
-        if(!project.icoToken.transferFrom(project.owner, msg.sender, tokens)) {
+        if(!project.icoToken.transfer(msg.sender, tokens)) {
             revert("Token transfer failed");
         }
         contributors[_id][msg.sender] = msg.value;
@@ -78,7 +79,7 @@ contract Campaign {
         project.funds += msg.value;
     } 
 
-    function createRequest(uint _projectID, string memory _description, uint _amount, address _recipient) external projectExists(_projectID) onlyOwner {
+    function createRequest(uint _projectID, string memory _description, uint _amount, address _recipient) external projectExists(_projectID) onlyOwner(_projectID) {
         Project storage project = projects[_projectID];
         require(project.funds >= project.goal, "Goal not reached yet");
         require(_recipient != address(0), "Invalid Recipient address");
@@ -102,6 +103,7 @@ contract Campaign {
         require(!request.completed, "This request already got enough votes and it is executed");
         requestApprovals[_projIndex][_reqIndex][msg.sender] = true;
         request.approvalsNum++;
+        request.voters.push(msg.sender);
         if(request.approvalsNum > (project.contributors.length / 2)) {
             finalizeRequest(_projIndex, _reqIndex);
         }
@@ -132,13 +134,9 @@ contract Campaign {
         return project.requests;
     }
 
-    function getRequest(uint _projID, uint _reqID) external view projectExists(_projID) onlyContributor(_projID) reqExists(_projID, _reqID) returns(Request memory) {
-        Project memory project = projects[_projID];
-        return project.requests[_reqID];
-    }
-
-    modifier onlyOwner {
-        require(msg.sender == owner, "Only owner can invoke this function");
+    modifier onlyOwner(uint _id) {
+        Project memory project = projects[_id];
+        require(msg.sender == project.owner, "Only owner can invoke this function");
         _;
     }
 

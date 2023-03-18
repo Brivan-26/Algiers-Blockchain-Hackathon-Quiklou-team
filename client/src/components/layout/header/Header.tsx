@@ -1,5 +1,6 @@
 import { IMAGES } from "@/constants/images";
 import useHook from "@/hooks/useHook";
+import { getProfileImageSrc } from "@/utils/lib";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -33,16 +34,20 @@ const Header: React.FC = () => {
         <div></div>
         <div className="flex gap-4">
           {walletAddress.length > 0 ? (
-            <>
-              <p className="text-white">
-                Welcome <b>{walletAddress.slice(0, 12)}...</b>
-              </p>
+            <div className="flex items-center gap-2">
               <div>
                 <Link href={"/compaigns/create"} className="btn">
                   Create a Compaign
                 </Link>
               </div>
-            </>
+              <div title={walletAddress} className="cursor-pointer">
+                <img
+                  src={getProfileImageSrc(walletAddress)}
+                  alt="wallet adress"
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              </div>
+            </div>
           ) : (
             <div
               className="btn cursor-pointer"

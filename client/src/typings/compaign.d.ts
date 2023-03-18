@@ -13,7 +13,7 @@ declare module COMPAIGN {
     contributed?: boolean;
     requests?: Request[];
     funds?: number;
-    icoToken?: string
+    icoToken?: string;
   };
 
   type NewCompaign = Omit<
@@ -28,12 +28,20 @@ declare module COMPAIGN {
   >;
 
   type Request = {
+    id?: number;
     description: string;
     amount: number;
     recipient: COMMUN.Adress;
     status: RequestStatus;
+    completed?: boolean;
     approvalsNum: number;
+    voters?: COMMUN.Adress[];
   };
+
+  type NewRequest = Omit<
+    Request,
+    "status" | "approvalsNum" | "id" | "completed"
+  >;
 
   type RequestStatus = "pending" | "approved" | "rejected";
 }

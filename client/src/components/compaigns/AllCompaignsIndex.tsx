@@ -81,7 +81,6 @@ const AllCompaignsIndex = () => {
             launchDay,
             tokenValue,
             id,
-            icoToken,
           } = projects[i];
           campaigns.push({
             goal: goal.toNumber(),
@@ -92,7 +91,16 @@ const AllCompaignsIndex = () => {
             owner,
             story,
             title,
-            funds,
+            requests: requests.map((req) => ({
+              description: req.description,
+              recipient: req.recipient,
+              status: req.status,
+              id: req.id.toNumber(),
+              approvalsNum: req.approvalsNum.toNumber(),
+              amount: req.amount.toNumber(),
+              voters: req.voters
+            })),
+            funds: funds.toNumber(),
             contributors,
             tokenValue: tokenValue.toNumber(),
             contributed: Boolean(

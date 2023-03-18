@@ -10,9 +10,9 @@ contract ICOToken is ERC20Capped, ERC20Burnable {
 
     address payable public owner;
 
-    constructor(uint _cap) ERC20("CompaignICO", "CICO") ERC20Capped(_cap){
+    constructor(address _campaign, uint _cap) ERC20("CompaignICO", "CICO") ERC20Capped(_cap){
         owner = payable(msg.sender);
-        _mint(owner, _cap);
+        _mint(_campaign, _cap);
 
     }
 

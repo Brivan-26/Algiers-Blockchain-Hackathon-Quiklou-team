@@ -8,11 +8,8 @@ async function main() {
 
   console.log(`Campaign contract is deployed to ${campaign.address}`);
   const ICOToken = await hre.ethers.getContractFactory("ICOToken");
-  const icoToken = await ICOToken.deploy(1000);
+  const icoToken = await ICOToken.deploy(campaign.address, 1000000);
   await icoToken.deployed();
-
-  const tx = await icoToken.approve(campaign.address, 1000);
-  await tx.wait();
 
   console.log(`ICOToken contract is deployed to ${icoToken.address}`);
 }
