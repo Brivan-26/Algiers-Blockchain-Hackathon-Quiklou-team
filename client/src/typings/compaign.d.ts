@@ -6,7 +6,7 @@ declare module COMPAIGN {
     story: string;
     goal: number;
     numOfContributers: number;
-    contributors: COMMUN.Adress[];
+    contributors?: COMMUN.Adress[];
     launchDay: Date;
     maxReachTime: Date;
     contributed?: boolean;
