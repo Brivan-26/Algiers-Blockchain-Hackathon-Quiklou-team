@@ -1,0 +1,101 @@
+export const DUMMY_COMPAIGNS: COMPAIGN.Compaign[] = [
+  {
+    id: 1,
+    owner: "0x123456789abcdef",
+    title:
+      "Help fund a new community garden lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
+    story:
+      "Our neighborhood needs a new community garden, and we're hoping to raise enough funds to make it happen! We've already secured a space, but we need your help to buy the materials and supplies we need to get started.",
+    goal: 5000,
+    numOfContributers: 25,
+    contributors: ["0x987654321fedcba", "0xabcdef123456789"],
+    launchDay: new Date("2022-01-01"),
+    maxReachTime: new Date("2022-03-31"),
+    contributed: true,
+  },
+  {
+    id: 2,
+    owner: "0x987654321fedcba",
+    title: "Support local artists at our annual art festival",
+    story:
+      "Every year, we host a free art festival to showcase the work of local artists. This year, we're hoping to raise enough funds to pay each artist a stipend for their participation. Your contribution will help ensure that our community continues to support and uplift our local artists.",
+    goal: 10000,
+    numOfContributers: 50,
+    contributors: ["0xabcdef123456789", "0xfedcba987654321"],
+    launchDay: new Date("2022-04-01"),
+    maxReachTime: new Date("2022-06-30"),
+  },
+  {
+    id: 3,
+    owner: "0xfedcba987654321",
+    title: "Help fund a new playground for our school",
+    story:
+      "Our school has an old and outdated playground that desperately needs to be replaced. We're hoping to raise enough funds to build a new playground that is safe, fun, and accessible for all students. Your contribution will help make this dream a reality!",
+    goal: 15000,
+    numOfContributers: 75,
+    contributors: ["0x123456789abcdef", "0xabcdef123456789"],
+    launchDay: new Date("2022-07-01"),
+    maxReachTime: new Date("2022-09-30"),
+  },
+  {
+    id: 4,
+    owner: "0xabcdef123456789",
+    title: "Help fund a new animal shelter",
+    story:
+      "Our city desperately needs a new animal shelter to help care for and find homes for the many stray animals in our community. With your help, we can provide a safe and loving environment for these animals and give them a chance at a better life.",
+    goal: 20000,
+    numOfContributers: 100,
+    contributors: ["0x123456789abcdef", "0x987654321fedcba"],
+    launchDay: new Date("2022-10-01"),
+    maxReachTime: new Date("2022-12-31"),
+  },
+  {
+    id: 5,
+    owner: "0xfedcba987654321",
+    title: "Support our local food bank",
+    story:
+      "Many families in our community struggle to put food on the table. By supporting our local food bank, you can help ensure that everyone has access to healthy andnutritious food. Your contribution will help provide meals and groceries to those in need, and make a real difference in the lives of our neighbors.",
+    goal: 5000,
+    numOfContributers: 25,
+    contributors: ["0x123456789abcdef", "0x987654321fedcba"],
+    launchDay: new Date("2023-01-01"),
+    maxReachTime: new Date("2023-03-31"),
+    contributed: true,
+  },
+  {
+    id: 6,
+    owner: "0x123456789abcdef",
+    title: "Support our local library",
+    story:
+      "Our community library is a vital resource for students, families, and book lovers of all ages. With your help, we can purchase new books, equipment, and technology to enhance the library's offerings and make it an even better place for everyone to learn, explore, and connect.",
+    goal: 10000,
+    numOfContributers: 50,
+    contributors: ["0xfedcba987654321", "0xabcdef123456789"],
+    launchDay: new Date("2023-04-01"),
+    maxReachTime: new Date("2023-06-30"),
+  },
+  {
+    id: 7,
+    owner: "0xabcdef123456789",
+    title: "Help fund a new bike path",
+    story:
+      "Our city is home to many avid cyclists, but there are limited safe and accessible bike paths. With your help, we can fund the construction of a new bike path that will make it easier and safer for people to bike around town, while also promoting healthy and sustainable transportation.",
+    goal: 15000,
+    numOfContributers: 75,
+    contributors: ["0x987654321fedcba", "0xfedcba987654321"],
+    launchDay: new Date("2023-07-01"),
+    maxReachTime: new Date("2023-09-30"),
+  },
+  {
+    id: 8,
+    owner: "0x987654321fedcba",
+    title: "Support our local theater",
+    story:
+      "Our community theater is a vibrant cultural hub that brings together people of all ages and backgrounds to enjoy live performances and creative expression. With your help, we can continue to produce high-quality shows, provide opportunities for local actors and performers, and offer affordable ticket prices for everyone.",
+    goal: 20000,
+    numOfContributers: 100,
+    contributors: ["0xfedcba987654321", "0xabcdef123456789"],
+    launchDay: new Date("2023-10-01"),
+    maxReachTime: new Date("2023-12-31"),
+  },
+];
