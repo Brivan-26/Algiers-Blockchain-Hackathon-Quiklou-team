@@ -5,6 +5,7 @@ import CompaignCard from "./CompaignCard";
 import CompaignFullDetails from "./CompaignFullDetails";
 import CompaignLoadingCard from "./CompaignCard/CompaignLoadingCard";
 import useHook from "@/hooks/useHook";
+import Detail from "../shared/Detail";
 
 const AllCompaignsIndex = () => {
   const { contract, signer } = useHook();
@@ -16,6 +17,9 @@ const AllCompaignsIndex = () => {
 
   const [selectedCompaign, setSelectedCompaign] =
     useState<COMPAIGN.Compaign | null>(null);
+
+  const [selectedCompaignToContribute, setSelectedCompaignToContribute] =
+    useState<(COMPAIGN.Compaign & { amount: number }) | null>(null);
 
   /* -------------------------------------------------------------------------- */
   /*                                  FUNCTIONS                                 */
@@ -33,10 +37,17 @@ const AllCompaignsIndex = () => {
     setSelectedCompaign(compaign);
   };
 
-  const contributeHandler = (id: number) => {
-    // TODO: implement contribute handler
-    console.log("contributeHandler");
-    console.log(`You   ${id}`);
+  const contributeHandler = () => {
+    if (selectedCompaignToContribute) {
+      const id = selectedCompaignToContribute.id;
+      const amount = selectedCompaignToContribute.amount;
+      // TODO: implement contribute handler
+    }
+  };
+
+  const onContributeClick = (compaign: COMPAIGN.Compaign) => {
+    setSelectedCompaignToContribute({ ...compaign, amount: 0 });
+    console.log("onContributeClick");
   };
 
   const fetchCampagins = async () => {
@@ -103,11 +114,49 @@ const AllCompaignsIndex = () => {
                 >
                   {selectedCompaign && (
                     <CompaignFullDetails
-                      onContribute={() =>
-                        contributeHandler(selectedCompaign.id)
-                      }
+                      onContribute={() => onContributeClick(selectedCompaign)}
                       compaign={selectedCompaign}
                     />
+                  )}
+                </Modal>
+              }
+              {
+                <Modal
+                  isOpen={Boolean(selectedCompaignToContribute)}
+                  closeModal={() => setSelectedCompaignToContribute(null)}
+                >
+                  {selectedCompaignToContribute && (
+                    <div className="z-50 flex flex-col gap-3">
+                      <h1 className="text-white">
+                        {selectedCompaignToContribute.title}
+                      </h1>
+                      <Detail
+                        label="Amount"
+                        value={
+                          <div className="flex flex-col gap-2">
+                            <input
+                              className="input rounded-sm ring-2 ring-primary"
+                              placeholder="Amount ETH"
+                              onChange={(e) =>
+                                setSelectedCompaignToContribute((prev) => ({
+                                  ...prev,
+                                  amount: e.target.valueAsNumber,
+                                }))
+                              }
+                            />
+                            <p className="text-xs text-gray-300">
+                              Each ammount of bla bla ETH
+                            </p>
+                            <button
+                              className="btn w-fit"
+                              onClick={contributeHandler}
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        }
+                      />
+                    </div>
                   )}
                 </Modal>
               }
@@ -116,7 +165,7 @@ const AllCompaignsIndex = () => {
                   key={compaign.id}
                   {...compaign}
                   onClick={(e) => openCompaignDetailsHandler(e, compaign)}
-                  onContribute={() => contributeHandler(compaign.id)}
+                  onContribute={() => onContributeClick(compaign)}
                 />
               ))}
             </>
