@@ -1,4 +1,5 @@
 import { INFO } from "@/constants/info";
+import useHook from "@/hooks/useHook";
 import { getProfileImageSrc } from "@/utils/lib";
 import React from "react";
 import Detail from "../shared/Detail";
