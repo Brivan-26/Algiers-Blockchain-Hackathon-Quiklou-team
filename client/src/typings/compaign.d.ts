@@ -15,14 +15,20 @@ declare module COMPAIGN {
 
   type NewCompaign = Omit<
     Compaign,
-    "owner" | "numOfContributers" | "contributors" | "launchDay"
+    | "owner"
+    | "numOfContributers"
+    | "contributors"
+    | "launchDay"
+    | "id"
+    | "contributed"
+    | "requests"
   >;
 
   type Request = {
     description: string;
     amount: number;
     recipient: COMMUN.Adress;
-    completed: RequestStatus;
+    status: RequestStatus;
     approvalsNum: number;
   };
 

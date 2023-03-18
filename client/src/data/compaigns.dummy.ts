@@ -12,6 +12,29 @@ export const DUMMY_COMPAIGNS: COMPAIGN.Compaign[] = [
     launchDay: new Date("2022-01-01"),
     maxReachTime: new Date("2022-03-31"),
     contributed: true,
+    requests: [
+      {
+        amount: 1000,
+        description: "Buy 1000 seeds",
+        recipient: "0xabcdef123456745",
+        approvalsNum: 0,
+        status: "pending",
+      },
+      {
+        amount: 2000,
+        description: "Buy 2000 seeds",
+        recipient: "0xabcdef1234567458",
+        approvalsNum: 10,
+        status: "approved",
+      },
+      {
+        amount: 4000,
+        description: "Buy 2000 seeds",
+        recipient: "0xabcdef12345674s5",
+        approvalsNum: 1,
+        status: "rejected",
+      },
+    ],
   },
   {
     id: 2,

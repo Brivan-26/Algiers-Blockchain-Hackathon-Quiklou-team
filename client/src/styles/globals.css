@@ -2,14 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+.rdt_TableHeader {
+  @apply bg-gray-800 text-white;
+}
+.rdt_TableRow {
+  @apply !bg-gray-700 !text-white;
+}
+.rdt_TableHeadRow {
+  @apply bg-gray-800 text-white;
+}
+.rdt_ExpanderRow {
+  @apply !bg-gray-800 !text-white;
+}
+.rdt_ExpanderRow > div > button > svg {
+  @apply !fill-white !text-white;
+}
+.bwdzsl {
+  @apply !text-white;
+}
+.rdt_Pagination {
+  @apply !bg-gray-800   fill-white text-white;
+}
+.rdt_TableCell {
+  @apply bg-gray-800 text-white;
+}
+.rdt_TableCol {
+  @apply bg-gray-700 text-white;
+}
+.rdt_TableHeadRow {
+  @apply !bg-gray-700 text-white;
+}
+.rdt_ExpanderRow {
+  @apply !bg-gray-800 !text-white;
+}
 @layer base {
   .input {
-    @apply bg-gray-700 text-gray-400 rounded-full text-sm border-none ring-0 outline-none focus:ring-2 focus:ring-primary w-full px-4 py-2;
+    @apply w-full rounded-full border-none bg-gray-700 px-4 py-2 text-sm text-white outline-none ring-0 placeholder:text-gray-400 focus:ring-2 focus:ring-primary;
   }
   .btn {
-    @apply bg-primary hover:bg-primary-hover transition active:scale-95 text-white rounded px-4 py-2 text-xs outline-none disabled:hover:bg-primary disabled:hover:bg-opacity-40 disabled:bg-opacity-40;
+    @apply rounded bg-primary px-4 py-2 text-xs text-white outline-none transition hover:bg-primary-hover active:scale-95 disabled:bg-opacity-40 disabled:hover:bg-primary disabled:hover:bg-opacity-40;
   }
   .head {
-    @apply text-white rounded-t px-4 py-2 text-base font-bold;
+    @apply rounded-t px-4 py-2 text-base font-bold text-white;
   }
 }

@@ -1,6 +1,8 @@
 import { INFO } from "@/constants/info";
 import { getProfileImageSrc } from "@/utils/lib";
 import React from "react";
+import Detail from "../shared/Detail";
+import CompaignRequestsTable from "./CompaignRequestsTable";
 
 type Props = {
   compaign: COMPAIGN.Compaign;
@@ -17,6 +19,7 @@ const CompaignFullDetails: React.FC<Props> = ({
     story,
     title,
     contributed,
+    requests,
   },
   onContribute,
 }) => {
@@ -47,41 +50,31 @@ const CompaignFullDetails: React.FC<Props> = ({
         <Detail label="Created At:" value={launchDay.toUTCString()} />
         <Detail label="Goal: " value={`${goal} ${INFO.CURRENCY}`} />
         <Detail label="Max Reach Time:" value={maxReachTime.toUTCString()} />
-        <Detail
-          label="Actions:"
-          value={
-            <div>
-              <button
-                disabled={contributed}
-                onClick={onContribute}
-                className="btn"
-              >
-                {contributed ? "Contributed" : "Contribute"}
-              </button>
-            </div>
-          }
-        />
+        {!contributed && (
+          <Detail
+            label="Actions:"
+            value={
+              <div>
+                <button
+                  disabled={contributed}
+                  onClick={onContribute}
+                  className="btn"
+                >
+                  {contributed ? "Contributed" : "Contribute"}
+                </button>
+              </div>
+            }
+          />
+        )}
+        {contributed && requests && (
+          <Detail
+            label="Requests: "
+            value={<CompaignRequestsTable requests={requests} />}
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default CompaignFullDetails;
-
-type DetailProps = {
-  label: string;
-  value: string | number | React.ReactNode;
-};
-
-const Detail: React.FC<DetailProps> = ({ label, value }) => {
-  return (
-    <div className="flex flex-col gap-y-1  rounded-lg bg-gray-700 p-4 transition duration-200 hover:bg-gray-600">
-      <span className="text-sm text-gray-300">{label}</span>
-      {typeof value === "string" || typeof value === "number" ? (
-        <p className="text-sm">{value}</p>
-      ) : (
-        <div>{value}</div>
-      )}
-    </div>
-  );
-};
