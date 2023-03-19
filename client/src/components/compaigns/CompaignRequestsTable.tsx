@@ -11,7 +11,7 @@ type Props = {
 };
 
 const CompaignRequestsTable: React.FC<Props> = ({ owner, requests }) => {
-  const { walletAddress } = useHook();
+  const { walletAddress, contract, signer } = useHook();
   const columns: TableColumn<COMPAIGN.Request>[] = [
     {
       name: "Recipient",
@@ -67,9 +67,9 @@ const CompaignRequestsTable: React.FC<Props> = ({ owner, requests }) => {
     {
       name: "Actions",
       cell: (row) => {
-        const onApprove = () => {
-          // TODO: Approve request
-          console.log("Approve");
+        const onApprove = async () => {
+          // ! approve request
+          console.log(row)
         };
         if (owner.toLowerCase() === walletAddress) return null;
         return (

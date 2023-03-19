@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/compaigns": "pages/compaigns.js",
-  "/compaigns/create": "pages/compaigns/create.js"
+  "/compaigns/create": "pages/compaigns/create.js",
+  "/compaigns": "pages/compaigns.js"
 }

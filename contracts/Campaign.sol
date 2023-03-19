@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.18;
 
 import "./ICOToken.sol";
 
 contract Campaign {
-    address public owner;
     struct Project {
         uint id;
         address owner;
@@ -22,7 +21,6 @@ contract Campaign {
     }
     Project[] public projects;
     mapping(uint => mapping(address => uint)) contributors; // project ID => account address => amount of contribution
-    mapping(uint => uint) funds; // project ID => balance
     struct Request {
         uint id;
         string description;
@@ -35,12 +33,9 @@ contract Campaign {
     }
     mapping(uint => mapping(uint => mapping(address => bool))) requestApprovals; // project ID => request ID => account => bool
 
-    constructor() {
-        owner = msg.sender;
-    }
-
-    function createProject(string memory _title, uint _goal, string memory _story, uint _maxReachTime, uint _tokenValue, address _address) external {
+    function createProject(string memory _title, uint _goal, string memory _story, uint _maxReachTime, uint _tokenValue, uint _totalICOSupply) external {
         uint newID = projects.length;
+        ICOToken newICOToken = new ICOToken(address(this), _totalICOSupply);
         Project storage project = projects.push();
         project.id = newID;
         project.owner = msg.sender;
@@ -50,7 +45,7 @@ contract Campaign {
         project.maxReachTime = _maxReachTime;
         project.tokenValue = _tokenValue;
         project.launchDay = block.timestamp;
-        project.icoToken = ICOToken(_address);
+        project.icoToken = ICOToken(newICOToken);
         project.funds = 0;
     }
 
@@ -127,11 +122,6 @@ contract Campaign {
             (bool success, ) = payable(contributor).call{value:contributeValue}("");
             require(success, "Ether transfer failed");
         }
-    }
-
-    function getRequests(uint _projID) external projectExists(_projID) onlyContributor(_projID) view returns(Request[] memory){
-        Project memory project = projects[_projID];
-        return project.requests;
     }
 
     modifier onlyOwner(uint _id) {

@@ -7,11 +7,11 @@ async function main() {
   await campaign.deployed();
 
   console.log(`Campaign contract is deployed to ${campaign.address}`);
-  const ICOToken = await hre.ethers.getContractFactory("ICOToken");
-  const icoToken = await ICOToken.deploy(campaign.address, 1000000);
-  await icoToken.deployed();
+  // const ICOToken = await hre.ethers.getContractFactory("ICOToken");
+  // const icoToken = await ICOToken.deploy(campaign.address, 1000000);
+  // await icoToken.deployed();
 
-  console.log(`ICOToken contract is deployed to ${icoToken.address}`);
+  // console.log(`ICOToken contract is deployed to ${icoToken.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

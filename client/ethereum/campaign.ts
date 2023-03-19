@@ -2,11 +2,6 @@ import { ethers } from "ethers";
 import contractSig from "./contracts/Campaign.sol/Campaign.json";
 const abi = [
   {
-    inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -65,9 +60,9 @@ const abi = [
         type: "uint256",
       },
       {
-        internalType: "address",
-        name: "_address",
-        type: "address",
+        internalType: "uint256",
+        name: "_totalICOSupply",
+        type: "uint256",
       },
     ],
     name: "createProject",
@@ -229,80 +224,6 @@ const abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_projID",
-        type: "uint256",
-      },
-    ],
-    name: "getRequests",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "string",
-            name: "description",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "address payable",
-            name: "recipient",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "status",
-            type: "string",
-          },
-          {
-            internalType: "bool",
-            name: "completed",
-            type: "bool",
-          },
-          {
-            internalType: "uint256",
-            name: "approvalsNum",
-            type: "uint256",
-          },
-          {
-            internalType: "address[]",
-            name: "voters",
-            type: "address[]",
-          },
-        ],
-        internalType: "struct Campaign.Request[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -371,7 +292,7 @@ const abi = [
 ];
 const campaignContract = (provider) => {
   return new ethers.Contract(
-    "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+    "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
     abi,
     provider
   );

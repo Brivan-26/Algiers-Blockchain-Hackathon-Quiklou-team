@@ -12,7 +12,7 @@ const CreateCompaignIndex: React.FC = () => {
     story: "",
     tokenValue: 0,
     maxReachTime: new Date(),
-    icoToken: "",
+    icoToken: 0,
   });
 
   const onChange = <T extends keyof COMPAIGN.NewCompaign>(
@@ -37,7 +37,7 @@ const CreateCompaignIndex: React.FC = () => {
           data.story,
           data.maxReachTime,
           data.tokenValue,
-          data.icoToken
+          BigNumber.from(data.icoToken)
         );
       await tx.wait();
       success("Campaign successfully created!");
@@ -86,13 +86,14 @@ const CreateCompaignIndex: React.FC = () => {
             }
           />
           <Detail
-            label="ICO Token"
+            label="ICO Token Total supply"
             value={
               <input
                 className="input rounded-sm ring-2 ring-gray-500"
+                type="number"
                 placeholder="ICO Token Address"
                 value={compaign.icoToken}
-                onChange={(e) => onChange("icoToken", e.target.value)}
+                onChange={(e) => onChange("icoToken", e.target.valueAsNumber)}
               />
             }
           />

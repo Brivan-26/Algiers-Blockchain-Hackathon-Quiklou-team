@@ -13,7 +13,7 @@ declare module COMPAIGN {
     contributed?: boolean;
     requests?: Request[];
     funds?: number;
-    icoToken?: string;
+    icoToken?: string | number;
   };
 
   type NewCompaign = Omit<
