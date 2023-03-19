@@ -84,7 +84,7 @@ const CompaignFullDetails: React.FC<Props> = ({
         <Detail label="Created At:" value={launchDay.toUTCString()} />
         <Detail
           label="Goal: "
-          value={`${ethers.utils.formatEther(goal)} ${INFO.CURRENCY}`}
+          value={`${goal} ${INFO.CURRENCY}`}
         />
         <Detail
           label="Need to reach goal: "
@@ -124,7 +124,7 @@ const CompaignFullDetails: React.FC<Props> = ({
         {contributed && requests && (
           <Detail
             label="Requests: "
-            value={<CompaignRequestsTable owner={owner} requests={requests} />}
+            value={<CompaignRequestsTable id={id} owner={owner} requests={requests} />}
           />
         )}
         {owner.toLowerCase() === walletAddress.toLowerCase() &&

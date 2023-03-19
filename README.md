@@ -48,3 +48,6 @@ We believe that our solution addresses the mentioned problems and give them: let
 
 Our solution is not that perfect *yet*, there are some features we will add slowly but surely, such as:
 - Upgrading the smart contract to implement **work tokens** that will enable the stakeholders to have a decision in the direction of the campaign.
+
+
+### How to start the development locally

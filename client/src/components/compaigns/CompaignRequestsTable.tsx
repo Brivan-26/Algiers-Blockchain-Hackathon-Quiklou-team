@@ -1,6 +1,8 @@
 import { INFO } from "@/constants/info";
 import useHook from "@/hooks/useHook";
+import { success } from "@/utils/alerts";
 import { getProfileImageSrc } from "@/utils/lib";
+import { BigNumber } from "ethers";
 import React from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import Detail from "../shared/Detail";
@@ -8,9 +10,10 @@ import Detail from "../shared/Detail";
 type Props = {
   requests: COMPAIGN.Request[];
   owner: string;
+  id: number;
 };
 
-const CompaignRequestsTable: React.FC<Props> = ({ owner, requests }) => {
+const CompaignRequestsTable: React.FC<Props> = ({ id, owner, requests }) => {
   const { walletAddress, contract, signer } = useHook();
   const columns: TableColumn<COMPAIGN.Request>[] = [
     {
@@ -68,8 +71,11 @@ const CompaignRequestsTable: React.FC<Props> = ({ owner, requests }) => {
       name: "Actions",
       cell: (row) => {
         const onApprove = async () => {
-          // ! approve request
-          console.log(row)
+          const tx = await contract
+            .connect(signer)
+            .approveRequest(BigNumber.from(id), BigNumber.from(row.id));
+          await tx.wait();
+          success("You successfully approved this request!");
         };
         if (owner.toLowerCase() === walletAddress) return null;
         return (
@@ -77,7 +83,7 @@ const CompaignRequestsTable: React.FC<Props> = ({ owner, requests }) => {
             {Boolean(
               row.voters.find((voter) => voter.toLowerCase() === walletAddress)
             ) ? (
-              <p>You alread approved this request</p>
+              <p>You already approved this request</p>
             ) : (
               <>
                 <button
