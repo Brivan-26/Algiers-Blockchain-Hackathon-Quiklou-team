@@ -14,6 +14,7 @@ declare module COMPAIGN {
     requests?: Request[];
     funds?: number;
     icoToken?: string | number;
+    spent?: number;
   };
 
   type NewCompaign = Omit<

@@ -76,6 +76,9 @@ const CompaignRequestsTable: React.FC<Props> = ({ id, owner, requests }) => {
             .approveRequest(BigNumber.from(id), BigNumber.from(row.id));
           await tx.wait();
           success("You successfully approved this request!");
+          setTimeout(() => {}, 1000);
+          window.location.href = "/compaigns";
+          location.reload();
         };
         if (owner.toLowerCase() === walletAddress) return null;
         return (

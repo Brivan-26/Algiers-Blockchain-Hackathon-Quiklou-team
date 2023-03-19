@@ -26,6 +26,7 @@ const CompaignFullDetails: React.FC<Props> = ({
     contributed,
     requests,
     funds,
+    icoToken
   },
   onContribute,
 }) => {
@@ -49,6 +50,8 @@ const CompaignFullDetails: React.FC<Props> = ({
         );
       await tx.wait();
       success("The request is successfully created!");
+      window.location.href = "/compaigns"
+      location.reload()
     } catch (err) {
       console.log(err.message);
       error(err.message);
@@ -103,7 +106,7 @@ const CompaignFullDetails: React.FC<Props> = ({
             </div>
           }
         />
-        <Detail label="Token value(per wei):" value={tokenValue} />
+        <Detail label={<p>Token value(per wei), <span title="ICO token address" className="text-white font-semibold">{icoToken}</span></p>} value={tokenValue} />
         <Detail label="Max Reach Time:" value={maxReachTime.toUTCString()} />
         {!contributed && (
           <Detail

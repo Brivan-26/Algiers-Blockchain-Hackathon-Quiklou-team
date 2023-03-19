@@ -1,5 +1,5 @@
 type DetailProps = {
-  label: string;
+  label: string | React.ReactNode;
   value: string | number | React.ReactNode;
 };
 

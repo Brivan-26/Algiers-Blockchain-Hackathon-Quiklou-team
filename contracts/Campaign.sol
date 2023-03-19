@@ -18,6 +18,8 @@ contract Campaign {
         ICOToken icoToken;
         address[] contributors;
         uint funds;
+        uint spent;
+
     }
     Project[] public projects;
     mapping(uint => mapping(address => uint)) contributors; // project ID => account address => amount of contribution
@@ -47,6 +49,7 @@ contract Campaign {
         project.launchDay = block.timestamp;
         project.icoToken = ICOToken(newICOToken);
         project.funds = 0;
+        project.spent = 0;
     }
 
     function getProjects() external view returns(Project[] memory){
@@ -55,30 +58,30 @@ contract Campaign {
 
     function contribute(uint _id) external projectExists(_id) payable {
         Project storage project = projects[_id];
-        if(block.timestamp > project.maxReachTime) {
+        if(block.timestamp > project.maxReachTime && project.funds < project.goal) {
             revertAllContributions(_id);
-            revert("This project doens't accept contributions anymore");
-        }        
-        require(contributors[_id][msg.sender] == 0, "You are already a contributor");
-        require(msg.value >= project.tokenValue, "Your current contribution doesn't even worth 1 token");
-        require(project.funds < project.goal, "Goal reached");
-        uint tokens = msg.value / project.tokenValue;
-        require(project.icoToken.balanceOf(address(this)) >= tokens, "No sufficiant tokens left");
+        }else {
+            require(contributors[_id][msg.sender] == 0, "You are already a contributor");
+            require(msg.value >= project.tokenValue, "Your current contribution doesn't even worth 1 token");
+            require(project.funds < project.goal, "Goal reached");
+            uint tokens = msg.value / project.tokenValue;
+            require(project.icoToken.balanceOf(address(this)) >= tokens, "No sufficiant tokens left");
 
-        if(!project.icoToken.transfer(msg.sender, tokens)) {
-            revert("Token transfer failed");
+            if(!project.icoToken.transfer(msg.sender, tokens * 10**18)) {
+                revert("Token transfer failed");
+            }
+            contributors[_id][msg.sender] = msg.value;
+            project.contributors.push(msg.sender);
+            project.numOfContributers++;
+            project.funds += msg.value;
         }
-        contributors[_id][msg.sender] = msg.value;
-        project.contributors.push(msg.sender);
-        project.numOfContributers++;
-        project.funds += msg.value;
     } 
 
     function createRequest(uint _projectID, string memory _description, uint _amount, address _recipient) external projectExists(_projectID) onlyOwner(_projectID) {
         Project storage project = projects[_projectID];
         require(project.funds >= project.goal, "Goal not reached yet");
         require(_recipient != address(0), "Invalid Recipient address");
-        require(_amount <= project.funds, "No sufficiant balance");
+        require(_amount + project.spent <= project.funds, "No sufficiant balance");
 
         uint newID = project.requests.length;
         Request storage request = project.requests.push();
@@ -89,6 +92,7 @@ contract Campaign {
         request.status = "pending";
         request.approvalsNum = 0;
         request.completed = false;
+
     }
 
     function approveRequest(uint _projIndex, uint _reqIndex) external projectExists(_projIndex) onlyContributor(_projIndex) reqExists(_projIndex, _reqIndex) {
@@ -98,6 +102,7 @@ contract Campaign {
         require(!request.completed, "This request already got enough votes and it is executed");
         requestApprovals[_projIndex][_reqIndex][msg.sender] = true;
         request.approvalsNum++;
+        project.spent += request.amount;
         request.voters.push(msg.sender);
         if(request.approvalsNum > (project.contributors.length / 2)) {
             finalizeRequest(_projIndex, _reqIndex);

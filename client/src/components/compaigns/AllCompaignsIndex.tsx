@@ -50,6 +50,8 @@ const AllCompaignsIndex = () => {
         });
         await tx.wait();
         success("You are a contributor of this project now!");
+        window.location.href = "/compaigns";
+        location.reload();
       } catch (err) {
         console.log(err.message);
         error(err.message);
@@ -59,7 +61,6 @@ const AllCompaignsIndex = () => {
 
   const onContributeClick = (compaign: COMPAIGN.Compaign) => {
     setSelectedCompaignToContribute({ ...compaign, amount: 0 });
-    console.log("onContributeClick");
   };
 
   const fetchCampagins = async () => {
@@ -80,6 +81,7 @@ const AllCompaignsIndex = () => {
             maxReachTime,
             launchDay,
             tokenValue,
+            icoToken,
             id,
           } = projects[i];
           campaigns.push({
@@ -91,6 +93,7 @@ const AllCompaignsIndex = () => {
             owner,
             story,
             title,
+            icoToken,
             requests: requests.map((req) => ({
               description: req.description,
               recipient: req.recipient,
@@ -98,7 +101,7 @@ const AllCompaignsIndex = () => {
               id: req.id.toNumber(),
               approvalsNum: req.approvalsNum.toNumber(),
               amount: req.amount.toNumber(),
-              voters: req.voters
+              voters: req.voters,
             })),
             funds: funds.toNumber(),
             contributors,
@@ -110,7 +113,6 @@ const AllCompaignsIndex = () => {
             ),
           });
         }
-        console.log(campaigns);
         setCompaigns(campaigns);
       } catch (err) {
         console.log(err.message);
