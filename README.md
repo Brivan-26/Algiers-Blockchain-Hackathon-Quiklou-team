@@ -51,3 +51,12 @@ Our solution is not that perfect *yet*, there are some features we will add slow
 
 
 ### How to start the development locally
+
+1. clone the project & install dependencies
+2. Run a local blockchain using: `npx hardhat node`
+3. run the command `npx hardhat run --network localhost scripts/deploy.js` to deploy an instance of the campagin contract. 
+4. After deploying the contract to the hardhat blockchain, its address will be printed in the terminal, take it and past it [here](./client/ethereum/campaign.ts), inside the constructor of the contract instance
+5. cd to the client forlder and launch the client application: `cd client && yarn dev`
+   
+   
+   
